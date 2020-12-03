@@ -2,7 +2,6 @@
     "name": "tracelog/jaeger",
     "type": "library",
     "require": {
-        "webpatser/laravel-uuid": "^3.0",
         "jukylin/jaeger-php": "^2.1"
     },
     "license": "MIT",
