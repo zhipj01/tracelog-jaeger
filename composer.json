@@ -5,7 +5,7 @@
         "webpatser/laravel-uuid": "^3.0",
         "jukylin/jaeger-php": "^2.1"
     },
-    "license": "",
+    "license": "MIT",
     "minimum-stability": "dev",
     "description": "",
     "autoload": {
