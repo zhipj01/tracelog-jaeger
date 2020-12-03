@@ -1,0 +1,21 @@
+{
+    "name": "tracelog/jaeger",
+    "type": "library",
+    "require": {
+        "webpatser/laravel-uuid": "^3.0",
+        "jukylin/jaeger-php": "^2.1"
+    },
+    "license": "",
+    "minimum-stability": "dev",
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "Tracelog\\jaeger\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tracelog\\jaeger\\": "src/"
+        }
+    }
+}
