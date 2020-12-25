@@ -31,10 +31,16 @@ class RequestWatcher
             $rootSpan->setTag('http.status_code', (string)$event->response->getStatusCode());
             $rootSpan->setTag('http.error', $event->response->isSuccessful() ? 'false' : 'true');
             $rootSpan->setTag('controller_action', optional($event->request->route())->getActionName());
+
+            $data = $event->request->toArray();
+            isset($data['password']) && $data['password'] = md5($data['password']);
+            isset($data['pwd']) && $data['pwd'] = md5($data['pwd']);
+
             $rootSpan->log(['requestData' => [
-                'data' => $event->request->toArray(),
+                'data' => $data,
                 'headers' => $event->request->header()
             ]]);
+
             $rootSpan->log(['responseData' => $event->response->getContent()]);
 
             $this->jaeger->setRootSpan($rootSpan);
