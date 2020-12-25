@@ -24,13 +24,18 @@ class RequestWatcher
         Event::listen(RequestHandled::class,function (RequestHandled $event){
             $rootSpan = $this->jaeger->getRootSpan();
 
-            $rootSpan->overwriteOperationName(optional($event->request->route())->uri() ?? $event->request->getPathInfo());
+            $rootSpan->overwriteOperationName($event->request->method().':'.optional($event->request->route())->uri() ?? $event->request->getPathInfo());
             $rootSpan->setTag('http.host', $event->request->getHost());
             $rootSpan->setTag('http.route', str_replace($event->request->root(), '', $event->request->fullUrl()) ?: '/');
             $rootSpan->setTag('http.method', $event->request->method());
             $rootSpan->setTag('http.status_code', (string)$event->response->getStatusCode());
             $rootSpan->setTag('http.error', $event->response->isSuccessful() ? 'false' : 'true');
             $rootSpan->setTag('controller_action', optional($event->request->route())->getActionName());
+            $rootSpan->log(['requestData' => [
+                'data' => $event->request->toArray(),
+                'headers' => $event->request->header()
+            ]]);
+            $rootSpan->log(['responseData' => $event->response->getContent()]);
 
             $this->jaeger->setRootSpan($rootSpan);
         });
