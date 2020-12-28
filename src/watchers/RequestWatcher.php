@@ -41,7 +41,13 @@ class RequestWatcher
                 'headers' => $event->request->header()
             ]]);
 
-            $rootSpan->log(['responseData' => $event->response->getContent()]);
+            $responseData = $event->response->getContent();
+            $rootSpan->log(['responseData' => $responseData]);
+
+            $responseData = json_decode($responseData,true);
+            if ($responseData['code'] == 500){
+                $rootSpan->setTag('error',true);
+            }
 
             $this->jaeger->setRootSpan($rootSpan);
         });
