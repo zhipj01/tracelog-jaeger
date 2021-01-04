@@ -28,6 +28,12 @@ class FrameworkWatcher
     public function register(): void
     {
         app()->terminating(function () {
+            $rootSpan = $this->jaeger->getRootSpan();
+
+            $rootSpan->startTime = (int)(LARAVEL_START * 1000000);
+
+            $rootSpan->finish();
+
             if (config('jaeger.enabled')) {
                 $this->jaeger->client()->flush();
             }
